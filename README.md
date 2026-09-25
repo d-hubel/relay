@@ -1,10 +1,20 @@
 # relay
 
-A Claude skill that gives long projects a memory. Plain markdown files track the plan, progress and decisions, so every session picks up where the last one stopped. Chat thinks, Claude Code does.
+A Claude skill that gives long projects a memory. Plain markdown files track the plan, progress and decisions, so every session picks up where the last one stopped. Plan in a Claude Project, build in Claude Code.
 
 Works alone or with [superpowers](https://github.com/obra/superpowers).
 
 ![relay workflow](docs/relay-workflow.png)
+
+## What makes it different
+
+- **Chat and Code work together.** Plan in a Claude Project (phone-friendly), build in Claude Code. An inbox file hands work between them.
+- **Works with superpowers.** Chat designs, superpowers builds test-first. Built-in rules stop them from clashing.
+- **Right model per step.** Code steps are tagged Haiku, Sonnet or Opus.
+- **Asks before planning.** Questions first, then your go-ahead, then the plan.
+- **Stays on plan.** A roadmap cursor and scope guard stop drift; a decisions log keeps settled questions settled.
+- **Keeps the Project in sync.** Each Code session ends by updating your Project's files (or one click on Sync now).
+- **Adapts to you.** Beginners get plain-language explanations; experienced devs don't.
 
 ## Install
 
@@ -13,43 +23,45 @@ Works alone or with [superpowers](https://github.com/obra/superpowers).
 
 ## Start
 
-In chat or Claude Code:
+In a Claude Project chat or in Claude Code:
 
 > I'm starting a project using the relay skill.
 
-## How it works
+Project instructions to paste (claude.ai → your Project → instructions):
 
-```mermaid
-flowchart LR
-  subgraph Chat["Claude chat · think"]
-    A["Start: read journal + roadmap"] --> B["Design the step"] --> C["Write inbox packet"]
-  end
-  subgraph Code["Claude Code · do"]
-    D["Start: read journal + roadmap"] --> E["Apply inbox"] --> F["Build the step"] --> G["End: update files, commit"]
-  end
-  C -- "inbox.md" --> E
-  G -- "updated files" --> A
-```
+> If instructions.md is in this Project, read it and follow its Session Start Checklist before any work. If it isn't, set up the project with the relay skill.
 
-Every session: **start** (read journal, confirm the step) → **work** → **end** (update files, log decisions, journal entry).
+## How a session works
+
+**Start** (read journal, confirm the step and model) → **Work** (one roadmap step) → **End** (update files, log decisions, journal entry, sync the Project).
 
 ## Planning
 
 ![How relay plans a step](docs/relay-planning.png)
 
+## Keeping your Project in sync
+
+Code changes files; chat reads the Project's copies. At the end of each Code session, relay uses the first route that works:
+
+1. **Code session attached to your Project:** uploads the changed files directly.
+2. **Repo on GitHub:** pushes, then you click **Sync now** in your Project's files. Link the repo once: Project files → + → GitHub.
+3. **Neither:** lists the files to re-upload.
+
+Chat also checks the journal's "Files changed" lines and asks you to sync before writing code against a stale copy.
+
 ## Files
 
 | File | Purpose |
 |---|---|
-| `CLAUDE.md` | Loads the rules into every Claude Code session |
 | `instructions.md` | Session checklists and rules |
-| `roadmap.md` | The plan; `← CURRENT` marks the next step |
-| `journal.md` | Session log; last entry says where to resume |
-| `journal-archive.md` | Older journal entries |
+| `roadmap.md` | The plan; `← CURRENT` marks the next step; model tag per code step |
+| `journal.md` | Session log; last entry says where to resume and which files changed |
 | `decisions.md` | Why things are the way they are |
+| `inbox.md` | Chat work waiting for Claude Code |
 | `index.md` | Map of project files |
 | `costs.md` | API spend |
-| `inbox.md` | Chat work waiting for Claude Code |
+| `journal-archive.md` | Older journal entries |
+| `CLAUDE.md` | Loads the rules into every Claude Code session |
 | `superpowers.md` | Handoff rules (superpowers users only) |
 
 Chat-only projects need just `instructions`, `roadmap`, `journal`, `decisions`.
@@ -66,7 +78,7 @@ Chat-only projects need just `instructions`, `roadmap`, `journal`, `decisions`.
 | Mid-build questions | Stops to ask | Decides, logs the call |
 | Done means | Shown working | Tests pass + review clean |
 | Model per code step | Tagged Haiku/Sonnet/Opus; you switch | Superpowers picks |
-| Non-code steps | This workflow | This workflow |
-| Rules per session | ~1,400 tokens | ~3,500 tokens |
+| Non-code steps | relay | relay |
+| Rules per session | ~1,700 tokens | ~3,200 tokens |
 
 Design method adapted from superpowers' brainstorming skill.
