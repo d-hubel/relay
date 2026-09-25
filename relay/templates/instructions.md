@@ -38,7 +38,10 @@ If `superpowers.md` exists, follow it too. Where it and these instructions cover
 4. Log any decisions in `decisions.md`
 5. Log any API or service spend in `costs.md`
 6. Append a new entry to `journal.md` (never edit past entries), including a "Files changed" line listing every project file created or edited, so the user knows what to re-upload to the Project. If `journal.md` now holds more than 5 session entries, roll up: move all but the 3 newest, word for word and in order, to the end of `journal-archive.md`, and add one line per moved session to the "Project so far" summary
-7. Suggest a git commit message
+7. Commit the changes. Then bring the Claude Project up to date, using the first route that works:
+   - If this session can write Claude Project files (a Projects tool is available), upload every file in "Files changed" to the Project, replacing the old copies. Say which files you updated
+   - Else, if the Project syncs from GitHub, push the commit and tell the user: "Click **Sync now** in your Project's files." Ask before the first push; after a yes, push every session
+   - Else, list the files the user needs to re-upload
 
 ---
 
@@ -104,4 +107,4 @@ done out of order, or delete this exception. -->
 - If a big design discussion starts in Claude Code, suggest moving it to chat
 - Chat cannot change project files. It writes exact change instructions ("apply packets") into `inbox.md`, each with an Expected line, and Claude Code applies them
 - Applying a packet: before each item, confirm its anchor or old text exists exactly. If it doesn't, stop and report; never guess
-- Chat reads code from the Project's uploaded copies. Before writing code from them, check the journal's "Files changed" lines and ask the user to re-upload any file changed since
+- Chat reads code from the Project's copies. Before writing code from them, check the journal's "Files changed" lines and ask the user to re-upload or sync any file changed since
