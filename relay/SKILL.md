@@ -85,8 +85,12 @@ and offer to add it (setup step 4).
      before any work. If it isn't, set up the project with the
      relay skill."
    - Start a new chat to begin Session 1.
-   - Chat can't save Project files. At each session end, re-upload the
-     changed files and remove the old copies.
+   - Chat can't save Project files. With Claude Code, keep the Project in
+     sync the easy way: put the project on GitHub and add the repo to the
+     Project's files (+ → GitHub). Each Code session ends by pushing, and
+     one click on **Sync now** updates the Project. Code sessions attached
+     to the Project update it directly. Otherwise, re-upload the changed
+     files at each session end.
 
    Setup packet format (everything decided in chat, in full):
 
@@ -125,7 +129,8 @@ and offer to add it (setup step 4).
      first line on its own and keep everything else. Otherwise create it
      from the template.
    - If the folder isn't a git repo, offer to run `git init`. Then offer a
-     first commit of the new files.
+     first commit of the new files, and offer to connect a GitHub repo so
+     the Claude Project can sync from it.
    - Tell the user to start a new Claude Code session: `CLAUDE.md` is read
      at session start, so the rules load from the next session on.
    - If they also plan in Claude chat, tell them to upload the `workflow/`
