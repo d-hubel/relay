@@ -14,6 +14,7 @@ Works alone or with [superpowers](https://github.com/obra/superpowers).
 - **Asks before planning.** Questions first, then your go-ahead, then the plan.
 - **Stays on plan.** A roadmap cursor and scope guard stop drift; a decisions log keeps settled questions settled.
 - **Keeps the Project in sync.** Each Code session ends by updating your Project's files (or one click on Sync now).
+- **Stays lean as the project grows.** The journal and decisions log roll up into archives, applied inbox packets shrink to one line, the index is a snapshot read first, and each roadmap step gets a fresh session.
 - **Adapts to you.** Beginners get plain-language explanations; experienced devs don't.
 
 ## Install
@@ -33,7 +34,7 @@ Project instructions to paste (claude.ai → your Project → instructions):
 
 ## How a session works
 
-**Start** (read journal, confirm the step and model) → **Work** (one roadmap step) → **End** (update files, log decisions, journal entry, sync the Project).
+**Start** (read the journal's last entry, then `index.md`, and open only the files the step needs; confirm the step and model) → **Work** (one roadmap step) → **End** (update files, log decisions, journal entry, sync the Project, then a reminder to start a fresh session for the next step).
 
 ## Planning
 
@@ -44,7 +45,7 @@ Project instructions to paste (claude.ai → your Project → instructions):
 Code changes files; chat reads the Project's copies. At the end of each Code session, relay uses the first route that works:
 
 1. **Code session attached to your Project:** uploads the changed files directly.
-2. **Repo on GitHub:** pushes, then you click **Sync now** in your Project's files. Link the repo once: Project files → + → GitHub.
+2. **Repo on GitHub:** pushes, then you click **Sync now** in your Project's files. Link the repo once: Project files → + → GitHub. Include only `CLAUDE.md`, the `workflow/` files (not the two archives) and your specification. A whole-repo sync quickly outgrows the Project and makes chat search snippets instead of reading the files.
 3. **Neither:** lists the files to re-upload.
 
 Chat also checks the journal's "Files changed" lines and asks you to sync before writing code against a stale copy.
@@ -56,11 +57,12 @@ Chat also checks the journal's "Files changed" lines and asks you to sync before
 | `instructions.md` | Session checklists and rules |
 | `roadmap.md` | The plan; `← CURRENT` marks the next step; model tag per code step |
 | `journal.md` | Session log; last entry says where to resume and which files changed |
-| `decisions.md` | Why things are the way they are |
+| `decisions.md` | Current rules summary plus the newest decisions |
 | `inbox.md` | Chat work waiting for Claude Code |
-| `index.md` | Map of project files |
+| `index.md` | Snapshot table of contents; read first on every task |
 | `costs.md` | API spend |
 | `journal-archive.md` | Older journal entries |
+| `decisions-archive.md` | Older decisions |
 | `CLAUDE.md` | Loads the rules into every Claude Code session |
 | `superpowers.md` | Handoff rules (superpowers users only) |
 
@@ -79,6 +81,6 @@ Chat-only projects need just `instructions`, `roadmap`, `journal`, `decisions`.
 | Done means | Shown working | Tests pass + review clean |
 | Model per code step | Tagged Haiku/Sonnet/Opus; you switch | Superpowers picks |
 | Non-code steps | relay | relay |
-| Rules per session | ~1,700 tokens | ~3,200 tokens |
+| Rules per session | ~2,350 tokens | ~3,850 tokens |
 
 Design method adapted from superpowers' brainstorming skill.
