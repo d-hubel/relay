@@ -34,7 +34,7 @@ Project instructions to paste (claude.ai → your Project → instructions):
 
 ## How a session works
 
-**Start** (read the journal's last entry, then `index.md`, and open only the files the step needs; confirm the step and model) → **Work** (one roadmap step) → **End** (update files, log decisions, journal entry, sync the Project, then a reminder to start a fresh session for the next step).
+**Start** (read the journal's last entry, then `index.md`, then only the decisions that touch the step's files; open only the files the step needs; confirm the step and model) → **Work** (one roadmap step) → **End** (update files, log decisions, journal entry, sync the Project, then a reminder to start a fresh session for the next step).
 
 ## Planning
 
@@ -66,7 +66,34 @@ Chat also checks the journal's "Files changed" lines and asks you to sync before
 | `CLAUDE.md` | Loads the rules into every Claude Code session |
 | `superpowers.md` | Handoff rules (superpowers users only) |
 
-Chat-only projects need just `instructions`, `roadmap`, `journal`, `decisions`.
+Chat-only projects need just `instructions`, `roadmap`, `journal`, `decisions` (the archives appear at the first rollup).
+
+The skill itself:
+
+| File | Purpose |
+|---|---|
+| `relay/SKILL.md` | The jobs relay does day to day: design a step, write an inbox packet |
+| `relay/references/setup.md` | Setting up a new project (read once per project) |
+| `relay/references/rollups.md` | Rolling up the journal and the decisions log |
+| `relay/references/superpowers.md` | Handoff rules for superpowers users |
+| `relay/templates/` | The starting copy of every project file |
+
+## Staying token-efficient
+
+Long projects get slow and expensive when every session re-reads a growing pile of files. relay keeps the reading small:
+
+- **Index first.** `index.md` is a snapshot table of contents: one line per file, no history. Every task reads it, picks the files it needs, and opens only those.
+- **Decisions by file.** Each decision names the files it `Touches` and what was `Ruled out`. A session reads the short Current rules summary, then only the decisions for its own files, and doesn't retry rejected approaches.
+- **Rollups.** The journal keeps its last 3 entries and a one-line summary of the rest; the decisions log keeps its 10 newest entries. Older entries move word for word to archives that sessions open only for history.
+- **One-line inbox history.** An applied packet shrinks to one line; git keeps the full text.
+- **Short journal entries.** 8 lines of work at most; long evidence goes in a report file.
+- **One step per session.** When a step is approved, the session ends and reminds you to start a fresh one. A long session re-reads everything on every message; a fresh one starts from the journal.
+- **A lean Project.** Sync only the files chat needs. A whole-repo sync outgrows the Project and makes chat search snippets instead of reading files.
+- **Contents lists.** Large reference files, like a specification, open with a list of their headings, so a session reads only the sections it needs.
+
+### Updating an existing project
+
+Projects set up before these changes keep their old `workflow/` files: relay never overwrites them. To bring one up to date, ask in its Claude Project chat: "Write an inbox packet that brings this project's workflow files up to the current relay templates." Then apply the packet in Claude Code.
 
 ## With and without superpowers
 
@@ -81,6 +108,10 @@ Chat-only projects need just `instructions`, `roadmap`, `journal`, `decisions`.
 | Done means | Shown working | Tests pass + review clean |
 | Model per code step | Tagged Haiku/Sonnet/Opus; you switch | Superpowers picks |
 | Non-code steps | relay | relay |
-| Rules per session | ~2,350 tokens | ~3,850 tokens |
+| Rules per session | ~2,450 tokens | ~3,950 tokens |
 
-Design method adapted from superpowers' brainstorming skill.
+Design method adapted from superpowers' brainstorming skill. Decisions' Touches and Ruled out lines adapted from [Trail-Code](https://github.com/trailhq/Trail-Code)'s learnings.
+
+## Changes
+
+**2026-10-17 — Token efficiency.** Main skill file cut from 11.3 KB to 5.3 KB (setup and rollups moved to `references/`). New: decisions summary and rollup with `decisions-archive.md`, Touches and Ruled out lines on decisions, one-line inbox history, index as a snapshot read first, journal entries capped at 8 lines, Contents lists for large reference files, one step per session with a new-session reminder, and guidance to sync only the files chat needs. The per-session rules grow by about 750 tokens; on a large project, the reading at the start of each session fell from about 60–100K tokens to about 25–30K.
