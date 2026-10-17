@@ -25,8 +25,8 @@ If `superpowers.md` exists, follow it too. Where it and these instructions cover
 1. Read the "Project so far" summary and the last entry of `journal.md`, and find its "NEXT SESSION STARTS" line. Read older entries or `journal-archive.md` only if you need history they hold
 2. Read `roadmap.md` — confirm the next uncrossed step matches the journal cursor
 3. Check the Pending Items in `inbox.md` for items that affect this step
-4. If the step involves an architectural choice, read the "Current rules" summary at the top of `decisions.md`; open a full entry only when you need its reasoning (search for its heading in `decisions.md` or `decisions-archive.md`, then read that range)
-5. Read `index.md` and pick the files this step will read or change; open only those
+4. Read `index.md` and pick the files this step will read or change; open only those
+5. Read the "Current rules" summary at the top of `decisions.md`. Then search `decisions.md` for `**Touches**:` lines naming the files you picked (or their folders) and read only those entries, including their Ruled out lines: don't retry what was already rejected. Search `decisions-archive.md` the same way only if you need older history
 6. Confirm with the user: "Resuming at [Phase X, Step Y: description]. Proceed?" If the step has a model tag, add: "This step: [Model]. Switch with `/model [model]` (in chat, the model picker) if you haven't." If work turns out harder than tagged, say so and suggest switching up
 7. Do not begin work until the user confirms
 
@@ -39,7 +39,7 @@ Every finished roadmap step ends the session. As soon as the user approves a ste
 1. Show evidence that the step works (a test run, a file opened, output checked) before marking it done
 2. Update `index.md` for any new or changed files. If the step changed a specification file, update it in the same commit, including its Contents list if it has one
 3. Update `roadmap.md` — mark completed steps `[x]` with the date, move the `← CURRENT` marker
-4. Log any decisions in `decisions.md`, and update its "Current rules" summary if a decision adds, changes or replaces a rule. If `decisions.md` now holds more than 15 entries, roll it up (relay skill, `references/rollups.md`)
+4. Log any decisions in `decisions.md`, each with a Touches line (the files it governs) and a Ruled out line (what was rejected and why), and update its "Current rules" summary if a decision adds, changes or replaces a rule. If `decisions.md` now holds more than 15 entries, roll it up (relay skill, `references/rollups.md`)
 5. Log any API or service spend in `costs.md`
 6. Append a new entry to `journal.md` (never edit past entries), including a "Files changed" line listing every project file created or edited, so the user knows what to re-upload to the Project. Keep the **Work** list to 8 lines or fewer; put long evidence (test output, row counts, review findings) in a report file and name it in the entry. If `journal.md` now holds more than 5 session entries, roll up: move all but the 3 newest, word for word and in order, to the end of `journal-archive.md`, and add one line per moved session to the "Project so far" summary
 7. Commit the changes. Then bring the Claude Project up to date, using the first route that works:
@@ -55,7 +55,7 @@ Every finished roadmap step ends the session. As soon as the user approves a ste
 - Before any task, read `index.md` first: it is the table of contents for the whole project. Pick the files the task needs from it and open only those
 - Read large files (>500 lines) by line range when possible. A large reference file (a specification, a long design doc) starts with a Contents list of its headings: read that first, then only the sections you need
 - Never re-read files already in context
-- Never re-debate decisions in `decisions.md` — reference them and move on
+- Never re-debate decisions in `decisions.md` — reference them and move on. Never retry an approach a decision lists under Ruled out without telling the user first
 - If unsure whether a file is needed, ask rather than reading speculatively
 
 ---

@@ -48,8 +48,9 @@ designed where it is built.
    recommendation. Cut anything not needed yet.
 5. Present the design in short sections and get a yes on each. Keep pieces
    small, each with one job.
-6. Write the approved design as a spec: goal, decisions, constraints, what's
-   out of scope, how we'll know it works. For code, also: the main pieces
+6. Write the approved design as a spec: goal, decisions (each with the
+   files it touches and what was ruled out), constraints, what's out of
+   scope, how we'll know it works. For code, also: the main pieces
    and how they connect, and what should happen with missing, wrong or
    unexpected input. Check it for "TBD", contradictions, and anything that
    could be read two ways; fix them.

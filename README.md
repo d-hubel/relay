@@ -57,7 +57,7 @@ Chat also checks the journal's "Files changed" lines and asks you to sync before
 | `instructions.md` | Session checklists and rules |
 | `roadmap.md` | The plan; `← CURRENT` marks the next step; model tag per code step |
 | `journal.md` | Session log; last entry says where to resume and which files changed |
-| `decisions.md` | Current rules summary plus the newest decisions |
+| `decisions.md` | Current rules summary plus the newest decisions; each names the files it touches and what was ruled out |
 | `inbox.md` | Chat work waiting for Claude Code |
 | `index.md` | Snapshot table of contents; read first on every task |
 | `costs.md` | API spend |

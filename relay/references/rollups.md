@@ -30,4 +30,6 @@ When `decisions.md` holds more than 15 entries:
    every `(see ...)` line names a heading in `decisions.md` and every
    `(archive: ...)` line names one in `decisions-archive.md`.
 
+Moved entries keep their Touches and Ruled out lines, so a search of the archive still finds them by file.
+
 Nothing is deleted, so both logs stay append-only.
