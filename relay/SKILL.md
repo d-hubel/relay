@@ -1,6 +1,6 @@
 ---
 name: relay
-description: Use when starting a new multi-session project, or when the user asks to set up project memory files, design a roadmap step before building it, write an inbox packet for Claude Code, or roll up the journal.
+description: Use when starting a new multi-session project, or when the user asks to set up project memory files, design a roadmap step before building it, write an inbox packet for Claude Code, or roll up the journal or decisions log.
 ---
 
 # Relay
@@ -16,125 +16,16 @@ memory of this conversation does not survive; the files do.
 
 | The user wants to... | Do this |
 |---|---|
-| Start a new project | **Set up** (below) |
-| Work on an existing project | Follow `workflow/instructions.md`: Session Start, work, Session End |
+| Start a new project | Read `references/setup.md` and follow it |
+| Work on an existing project | Follow `workflow/instructions.md`: Session Start, one step, Session End |
 | Plan a new feature or part of the project | **Design a step** (below), in chat |
 | Hand chat work to Claude Code | **Write an inbox packet** (below) |
-| Shrink a long journal | **Roll up the journal** (below) |
+| Shrink a long journal or decisions log | Read `references/rollups.md` and follow it |
 
 If superpowers skills are available in this session, follow
 `workflow/superpowers.md`; Claude Code already loads it through `CLAUDE.md`.
 If the project doesn't have that file yet, read `references/superpowers.md`
-and offer to add it (setup step 4).
-
-## Set up a new project
-
-1. Get a project name, what the user wants to build, rough phases, and
-   whether they're comfortable with code. Invite the idea in their own
-   words, any length: a paragraph or a few related ideas is fine. Write the
-   one-line goal yourself from what they say, and let them correct it. If
-   their message already covers something, don't ask again. Otherwise ask
-   one question at a time. Also ask what matters for the plan: constraints,
-   deadlines, what's already built, what "done" looks like.
-2. When your questions are answered, summarize what you heard and ask: "Ready
-   for me to draft the roadmap?" Draft only after a yes.
-3. Draft the roadmap: phases that each end in something usable, cheap and
-   simple versions first. Show it and adjust until the user approves. Put
-   exactly one `← CURRENT` marker on the first step. Unless the project uses
-   superpowers (it picks its own models), tag each code step with a model:
-   - `(Haiku)`: exceedingly simple: a text or style tweak, one small file
-   - `(Sonnet)`: most code steps: a feature, several files, routine fixes
-   - `(Opus)`: the most ambitious: architecture, a new system, hard debugging
-   When unsure, pick the higher one. Non-code steps get no tag.
-4. If this is running in Claude Code, use the "With Claude Code" set.
-   Otherwise ask whether they will use Claude Code or chat only, and if
-   Claude Code, whether they use superpowers. Then create the files from
-   `templates/`:
-   - **Chat only:** `instructions.md`, `roadmap.md`, `journal.md`,
-     `decisions.md`. In `instructions.md`, remove the "File locations" and
-     "Chat and Claude Code" sections and every checklist line that mentions
-     `index.md`, `costs.md` or `inbox.md`, then renumber. Create
-     `journal-archive.md` at the first rollup.
-   - **With Claude Code:** all 9 files. `CLAUDE.md` goes at the project root,
-     everything else in a `workflow/` folder.
-   - **With superpowers** (installed, or the user plans to use it): also copy
-     `references/superpowers.md` to `workflow/superpowers.md`, and add
-     `@workflow/superpowers.md` to `CLAUDE.md` on its own line, right after
-     the instructions import. This loads the rules every session and gives
-     them the priority superpowers grants to project instructions.
-   - Fill in the `[CUSTOMIZE]` spots; delete the `<!-- TEMPLATE -->` comments.
-     Set Working Style from the code-comfort answer: keep the teaching
-     bullet for beginners; for experienced users, replace it with "The user
-     is an experienced developer: skip basics, explain only non-obvious
-     choices."
-5. Write a Session 0 entry in `journal.md` pointing at the first step.
-6. In chat, deliver the files:
-   - **Chat only:** deliver each file separately for download (Projects
-     can't upload a zip).
-   - **With Claude Code:** don't hand out 9 files. Deliver one `inbox.md`
-     holding a setup packet (format below). The user puts it in the empty
-     project folder, opens Claude Code there, and says "Apply inbox.md".
-     Claude Code builds everything from this skill's templates, so the
-     skill must be available there (same Claude account).
-
-   Then tell the user:
-   - Add the files to the Project's files (with Claude Code: after it has
-     applied the packet, upload the files it created in `workflow/`).
-   - If the Project instructions aren't set yet, paste: "If instructions.md
-     is in this Project, read it and follow its Session Start Checklist
-     before any work. If it isn't, set up the project with the
-     relay skill."
-   - Start a new chat to begin Session 1.
-   - Chat can't save Project files. With Claude Code, keep the Project in
-     sync the easy way: put the project on GitHub and add the repo to the
-     Project's files (+ → GitHub). Each Code session ends by pushing, and
-     one click on **Sync now** updates the Project. Code sessions attached
-     to the Project update it directly. Otherwise, re-upload the changed
-     files at each session end.
-
-   Setup packet format (everything decided in chat, in full):
-
-   ```
-   # Inbox
-
-   ## Pending Items
-
-   ### Item 1 (NEW) — Set up project files
-   **Apply to**: this folder
-   **Action**: Run relay setup in Claude Code mode (step 7) with
-   the details below. Put this inbox.md into workflow/ with this item moved
-   to "Recently Applied" and dated.
-   **Project name**: ...
-   **Goal**: ...
-   **Superpowers**: <yes or no>
-   **Push-back exception**: <exploratory work, or "none">
-   **Coding experience**: <beginner or experienced>
-   **Working style changes**: <other trims to the defaults, or "none">
-   **roadmap.md content**:
-   <the full approved roadmap, one ← CURRENT marker>
-   **Session 0 journal note**: Planned in Claude chat on <date>; files
-   created in Claude Code.
-   **Expected**: CLAUDE.md at the root starting with
-   @workflow/instructions.md (then @workflow/superpowers.md if Superpowers
-   is yes); workflow/ holds instructions, roadmap, journal, journal-archive,
-   index, decisions, costs and inbox (plus superpowers.md if yes).
-   ```
-7. In Claude Code, write the files directly into the project folder:
-   - If a setup packet in `inbox.md` is being applied, take the name, goal,
-     roadmap, customizations and journal note from it; don't ask again.
-     Check its Expected line when done.
-   - Create `workflow/` if missing. Create only the files that don't exist
-     yet; never overwrite an existing workflow file.
-   - If `CLAUDE.md` already exists, add `@workflow/instructions.md` as its
-     first line on its own and keep everything else. Otherwise create it
-     from the template.
-   - If the folder isn't a git repo, offer to run `git init`. Then offer a
-     first commit of the new files, and offer to connect a GitHub repo so
-     the Claude Project can sync from it.
-   - Tell the user to start a new Claude Code session: `CLAUDE.md` is read
-     at session start, so the rules load from the next session on.
-   - If they also plan in Claude chat, tell them to upload the `workflow/`
-     files to a Project and paste the instructions line from step 6.
+and offer to add it.
 
 The project's own `workflow/instructions.md` is the authority. If it differs
 from this skill's template, the user customized it: follow theirs.
@@ -157,8 +48,9 @@ designed where it is built.
    recommendation. Cut anything not needed yet.
 5. Present the design in short sections and get a yes on each. Keep pieces
    small, each with one job.
-6. Write the approved design as a spec: goal, decisions, constraints, what's
-   out of scope, how we'll know it works. For code, also: the main pieces
+6. Write the approved design as a spec: goal, decisions (each with the
+   files it touches and what was ruled out), constraints, what's out of
+   scope, how we'll know it works. For code, also: the main pieces
    and how they connect, and what should happen with missing, wrong or
    unexpected input. Check it for "TBD", contradictions, and anything that
    could be read two ways; fix them.
@@ -175,9 +67,11 @@ Chat cannot change the user's files. When chat work needs to land in the
 project, write items for `workflow/inbox.md`, and never say a file "was
 updated".
 
-Before writing code or anchors from the Project's copy of a file, check the
-recent journal entries' "Files changed" lines. If a file you'll touch was
-changed since the user last uploaded it, ask them to re-upload it first.
+Read `index.md` first and open only the files the packet touches. Before
+writing code or anchors from the Project's copy of a file, check the recent
+journal entries' "Files changed" lines. If a file you'll touch was changed
+since the user last synced or uploaded it, ask them to sync or re-upload it
+first. If a file isn't in the Project, ask for it by path.
 
 ```
 ### Item N (NEW | REPLACE | DELETE) — short title
@@ -190,28 +84,21 @@ changed since the user last uploaded it, ask them to re-upload it first.
 
 End every packet with the journal entry for the session and a suggested git
 commit message. Claude Code applies items in order. Before each item it
-checks that the anchor or old text exists exactly; if not, it stops and
-reports instead of guessing. It checks each Expected line, moves the items
-to "Recently Applied" with the date, then commits.
+checks that the anchor or old text exists exactly once; if not, it stops and
+reports instead of guessing. It checks each Expected line, commits, then
+replaces the packet with one line under "Recently Applied" (date, items,
+title); git history keeps the full text.
 
-## Roll up the journal
-
-When `journal.md` holds more than 5 session entries:
-
-1. Move all but the 3 newest entries, word for word and in order, to the end
-   of `workflow/journal-archive.md` (create it from the template if missing).
-2. Add one line per moved session to the "Project so far" summary at the top
-   of `journal.md`.
-3. Check: every entry heading appears exactly once across the two files.
-
-Nothing is deleted, so the journal stays append-only.
+If other packets are already pending, say in the first item which goes first.
 
 ## Red flags
 
 | Thought | Reality |
 |---|---|
 | "Short session, I'll skip the end checklist" | The next session starts from a stale cursor. The end checklist is the price of closing. |
+| "Step's done, I'll start the next one here" | One step per session. A long session re-reads everything on every message; a fresh one starts from the journal. |
 | "I remember where we left off" | Read the journal. Your memory is a summary; the file is the record. |
+| "I'll read the whole folder to be safe" | Read `index.md`, then only the files the step needs. |
 | "It's done" (without showing it working) | Show the evidence before marking a step `[x]`. |
 | "The chat plan is clear enough to paste loosely" | Vague packets get applied wrong. Exact content, plus an Expected line. |
 | "This small extra task is fine to slip in" | Scope guard: ask whether to finish, add, or replace the current step. |

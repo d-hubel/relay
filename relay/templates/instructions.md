@@ -12,7 +12,9 @@ To design a new feature or part of the project, or to write an inbox packet, use
 
 ## File locations
 
-In the code repo, the reference files live in the `workflow/` folder: `instructions.md`, `roadmap.md`, `journal.md`, `journal-archive.md`, `index.md`, `decisions.md`, `costs.md`, `inbox.md`, and `superpowers.md` if the project uses superpowers. `CLAUDE.md` stays at the repo root because it is the only file Claude Code loads automatically. In Claude chat, the same files appear in the Project by name.
+In the code repo, the reference files live in the `workflow/` folder: `instructions.md`, `roadmap.md`, `journal.md`, `journal-archive.md`, `index.md`, `decisions.md`, `decisions-archive.md`, `costs.md`, `inbox.md`, and `superpowers.md` if the project uses superpowers. `CLAUDE.md` stays at the repo root because it is the only file Claude Code loads automatically.
+
+The Claude Project holds only the files chat needs: `CLAUDE.md`, the `workflow/` files except the two archives, and any specification the project is built from. Chat sees any other file (code, reports, archives) only when the user uploads it. If a chat needs one, ask for it by path.
 
 If `superpowers.md` exists, follow it too. Where it and these instructions cover the same situation, `superpowers.md` wins.
 
@@ -20,11 +22,11 @@ If `superpowers.md` exists, follow it too. Where it and these instructions cover
 
 ## Session Start Checklist (mandatory, in order)
 
-1. Read `journal.md` — find the last entry and its "NEXT SESSION STARTS" line. Do not read `journal-archive.md` unless you need history the summary doesn't cover
+1. Read the "Project so far" summary and the last entry of `journal.md`, and find its "NEXT SESSION STARTS" line. Read older entries or `journal-archive.md` only if you need history they hold
 2. Read `roadmap.md` — confirm the next uncrossed step matches the journal cursor
-3. Check `inbox.md` for unapplied items that affect this step
-4. Read `decisions.md` if the step involves an architectural choice
-5. Read the relevant `index.md` sections for files that will be touched
+3. Check the Pending Items in `inbox.md` for items that affect this step
+4. Read `index.md` and pick the files this step will read or change; open only those
+5. Read the "Current rules" summary at the top of `decisions.md`. Then search `decisions.md` for `**Touches**:` lines naming the files you picked (or their folders) and read only those entries, including their Ruled out lines: don't retry what was already rejected. Search `decisions-archive.md` the same way only if you need older history
 6. Confirm with the user: "Resuming at [Phase X, Step Y: description]. Proceed?" If the step has a model tag, add: "This step: [Model]. Switch with `/model [model]` (in chat, the model picker) if you haven't." If work turns out harder than tagged, say so and suggest switching up
 7. Do not begin work until the user confirms
 
@@ -32,25 +34,28 @@ If `superpowers.md` exists, follow it too. Where it and these instructions cover
 
 ## Session End Checklist (mandatory, in order)
 
+Every finished roadmap step ends the session. As soon as the user approves a step, run this checklist, even if time or tokens are left. Never start the next step in the same session.
+
 1. Show evidence that the step works (a test run, a file opened, output checked) before marking it done
-2. Update `index.md` for any new or changed files
+2. Update `index.md` for any new or changed files. If the step changed a specification file, update it in the same commit, including its Contents list if it has one
 3. Update `roadmap.md` — mark completed steps `[x]` with the date, move the `← CURRENT` marker
-4. Log any decisions in `decisions.md`
+4. Log any decisions in `decisions.md`, each with a Touches line (the files it governs) and a Ruled out line (what was rejected and why), and update its "Current rules" summary if a decision adds, changes or replaces a rule. If `decisions.md` now holds more than 15 entries, roll it up (relay skill, `references/rollups.md`)
 5. Log any API or service spend in `costs.md`
-6. Append a new entry to `journal.md` (never edit past entries), including a "Files changed" line listing every project file created or edited, so the user knows what to re-upload to the Project. If `journal.md` now holds more than 5 session entries, roll up: move all but the 3 newest, word for word and in order, to the end of `journal-archive.md`, and add one line per moved session to the "Project so far" summary
+6. Append a new entry to `journal.md` (never edit past entries), including a "Files changed" line listing every project file created or edited, so the user knows what to re-upload to the Project. Keep the **Work** list to 8 lines or fewer; put long evidence (test output, row counts, review findings) in a report file and name it in the entry. If `journal.md` now holds more than 5 session entries, roll up: move all but the 3 newest, word for word and in order, to the end of `journal-archive.md`, and add one line per moved session to the "Project so far" summary
 7. Commit the changes. Then bring the Claude Project up to date, using the first route that works:
-   - If this session can write Claude Project files (a Projects tool is available), upload every file in "Files changed" to the Project, replacing the old copies. Say which files you updated
+   - If this session can write Claude Project files (a Projects tool is available), upload every file in "Files changed" that the Project holds, replacing the old copies. Say which files you updated
    - Else, if the Project syncs from GitHub, push the commit and tell the user: "Click **Sync now** in your Project's files." Ask before the first push; after a yes, push every session
    - Else, list the files the user needs to re-upload
+8. Tell the user: "Step done and saved. Time for a new session: open a new Claude Code session (or type /clear) and say 'resume'. The journal carries where we left off." Then stop
 
 ---
 
 ## Token Efficiency Rules
 
-- Read only the files the current step needs; use `index.md` to find them
-- Read large files (>500 lines) by line range when possible
+- Before any task, read `index.md` first: it is the table of contents for the whole project. Pick the files the task needs from it and open only those
+- Read large files (>500 lines) by line range when possible. A large reference file (a specification, a long design doc) starts with a Contents list of its headings: read that first, then only the sections you need
 - Never re-read files already in context
-- Never re-debate decisions in `decisions.md` — reference them and move on
+- Never re-debate decisions in `decisions.md` — reference them and move on. Never retry an approach a decision lists under Ruled out without telling the user first
 - If unsure whether a file is needed, ask rather than reading speculatively
 
 ---
@@ -79,10 +84,12 @@ done out of order, or delete this exception. -->
 ## File Update Rules
 
 - `journal.md`: append-only; corrections go in a new entry. The only exceptions come from the rollup: old entries move unchanged to `journal-archive.md`, and lines are added to the "Project so far" summary
-- `journal-archive.md`: append-only; entries arrive only through the rollup
+- `decisions.md`: append-only, except the "Current rules" summary at the top, which is edited when a decision adds, changes or replaces a rule, and the rollup, which moves old entries unchanged to `decisions-archive.md`
+- `journal-archive.md`, `decisions-archive.md`: append-only; entries arrive only through the rollups
 - `roadmap.md`: edit only to mark completion or move the CURRENT marker; new steps need user approval
-- `index.md`: update on every file change; file path + identifier, no line numbers
-- `decisions.md`, `costs.md`: append-only
+- `index.md`: a snapshot of the current project, updated on every file change: one line per file (or per folder of similar files) with its path, purpose and main functions or components; no line numbers, dates or change history (those belong in the journal)
+- `inbox.md`: Pending Items hold unapplied packets in full; once applied and committed, a packet becomes one line under "Recently Applied" (date, items, title); git history keeps the full text
+- `costs.md`: append-only
 
 ---
 
@@ -106,5 +113,5 @@ done out of order, or delete this exception. -->
 - Plan in Claude chat; execute in Claude Code
 - If a big design discussion starts in Claude Code, suggest moving it to chat
 - Chat cannot change project files. It writes exact change instructions ("apply packets") into `inbox.md`, each with an Expected line, and Claude Code applies them
-- Applying a packet: before each item, confirm its anchor or old text exists exactly. If it doesn't, stop and report; never guess
-- Chat reads code from the Project's copies. Before writing code from them, check the journal's "Files changed" lines and ask the user to re-upload or sync any file changed since
+- Applying a packet: before each item, confirm its anchor or old text exists exactly once. If it doesn't, stop and report; never guess. After the packet is applied and committed, replace it with one line under "Recently Applied"
+- Chat reads code from the Project's copies or from files the user uploads. Before writing code from them, check the journal's "Files changed" lines and ask the user to sync or re-upload any file changed since

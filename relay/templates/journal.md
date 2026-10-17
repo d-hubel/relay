@@ -32,7 +32,7 @@ This file holds a short summary of older sessions plus the most recent entries. 
 
 **Phase**:
 **Steps worked on**:
-**Work**:
+**Work**: (8 lines or fewer; long evidence goes in a report file)
 -
 
 **Files changed**:

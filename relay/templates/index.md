@@ -1,6 +1,6 @@
 # Project Index
 
-A map of the project so Claude can find things without reading everything. Use file path + purpose (and function or component names for code). No line numbers — they go stale.
+The table of contents for the whole project. Every task reads this first, picks the files it needs, and opens only those. It is a snapshot of the project as it is now: one line per file (or per folder of similar files) with its path, purpose, and for code its main functions or components. No line numbers, dates or change history: those belong in the journal.
 
 ---
 
@@ -12,7 +12,8 @@ A map of the project so Claude can find things without reading everything. Use f
 - `journal.md` — summary of older sessions plus the latest entries
 - `journal-archive.md` — older journal entries
 - `index.md` — this file
-- `decisions.md` — why things are the way they are
+- `decisions.md` — current rules summary plus the newest decisions
+- `decisions-archive.md` — older decisions
 - `costs.md` — API and service spend
 - `inbox.md` — chat work waiting to be applied
 
