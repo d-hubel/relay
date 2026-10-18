@@ -36,7 +36,7 @@ Superpowers runs one code step: spec, plan, build, review.
    between steps. Put teaching explanations in code comments and in the
    end-of-run summary, in plain language.
 
-7. **Record it before superpowers deletes it.** At Session End:
+7. **Record it before superpowers deletes it.** At Session End (`workflow/session-end.md`):
    - copy each "Rulings I made" item into `decisions.md`
    - in the journal, name the spec and plan paths and any "Deferred minors"
    - mark the step `[x]` only after the final review is clean and tests pass

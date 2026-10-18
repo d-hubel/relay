@@ -17,7 +17,7 @@ memory of this conversation does not survive; the files do.
 | The user wants to... | Do this |
 |---|---|
 | Start a new project | Read `references/setup.md` and follow it |
-| Work on an existing project | Follow `workflow/instructions.md`: Session Start, one step, Session End |
+| Work on an existing project | Follow `workflow/instructions.md`: Session Start, one step, then `workflow/session-end.md` |
 | Plan a new feature or part of the project | **Design a step** (below), in chat |
 | Hand chat work to Claude Code | **Write an inbox packet** (below) |
 | Shrink a long journal or decisions log | Read `references/rollups.md` and follow it |
@@ -50,7 +50,8 @@ designed where it is built.
    small, each with one job.
 6. Write the approved design as a spec: goal, decisions (each with the
    files it touches and what was ruled out), constraints, what's out of
-   scope, how we'll know it works. For code, also: the main pieces
+   scope, and a final check that proves it works end to end: a command,
+   test or script that returns pass or fail. For code, also: the main pieces
    and how they connect, and what should happen with missing, wrong or
    unexpected input. Check it for "TBD", contradictions, and anything that
    could be read two ways; fix them.
@@ -79,7 +80,7 @@ first. If a file isn't in the Project, ask for it by path.
 **Action**: create | append after "<anchor>" | replace "<old>" with this
 **Content**:
 <the exact content — no placeholders, no "TBD", no "similar to above">
-**Expected**: <what the user or Claude Code should see after applying>
+**Expected**: <what Claude Code should see after applying; where possible a command to run and its expected output>
 ```
 
 End every packet with the journal entry for the session and a suggested git
@@ -97,6 +98,8 @@ If other packets are already pending, say in the first item which goes first.
 |---|---|
 | "Short session, I'll skip the end checklist" | The next session starts from a stale cursor. The end checklist is the price of closing. |
 | "Step's done, I'll start the next one here" | One step per session. A long session re-reads everything on every message; a fresh one starts from the journal. |
+| "One more try will fix it" | After two failed fixes, write down what was tried, add a Ruled out line, and start fresh. A new session with a better plan beats one full of failed attempts. |
+| "The reviewer found 12 things, I'll fix them all" | Fix only gaps that affect correctness or the stated requirements. The rest is optional. |
 | "I remember where we left off" | Read the journal. Your memory is a summary; the file is the record. |
 | "I'll read the whole folder to be safe" | Read `index.md`, then only the files the step needs. |
 | "It's done" (without showing it working) | Show the evidence before marking a step `[x]`. |

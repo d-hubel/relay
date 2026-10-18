@@ -1,6 +1,6 @@
 # Decisions Log
 
-One entry per decision, append-only below the summary. Future sessions reference these instead of re-arguing them. Read the Current rules summary first; open a full entry only when you need its reasoning. Older entries move to `decisions-archive.md` by the rollup rule in `instructions.md`.
+One entry per decision, append-only below the summary. Future sessions reference these instead of re-arguing them. Read the Current rules summary first; open a full entry only when you need its reasoning. Older entries move to `decisions-archive.md` by the rollup rule in `session-end.md`.
 
 ---
 
