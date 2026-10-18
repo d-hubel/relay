@@ -10,7 +10,9 @@
 2. When your questions are answered, summarize what you heard and ask: "Ready
    for me to draft the roadmap?" Draft only after a yes.
 3. Draft the roadmap: phases that each end in something usable, cheap and
-   simple versions first. Show it and adjust until the user approves. Put
+   simple versions first. Give each step a check that runs and returns pass
+   or fail (a test, a script, a command and its expected output); non-code
+   steps get a concrete "done when". Show it and adjust until the user approves. Put
    exactly one `← CURRENT` marker on the first step. Size each step to fit
    one session. Unless the project uses superpowers (it picks its own
    models), tag each code step with a model:
@@ -22,12 +24,13 @@
    Otherwise ask whether they will use Claude Code or chat only, and if
    Claude Code, whether they use superpowers. Then create the files from
    `templates/`:
-   - **Chat only:** `instructions.md`, `roadmap.md`, `journal.md`,
-     `decisions.md`. In `instructions.md`, remove the "File locations" and
-     "Chat and Claude Code" sections and every checklist or rule line that
-     mentions `index.md`, `costs.md` or `inbox.md`, then renumber. Create
+   - **Chat only:** `instructions.md`, `session-end.md`, `roadmap.md`,
+     `journal.md`, `decisions.md`. In `instructions.md`, remove the "File
+     locations" and "Chat and Claude Code" sections; in both files, remove
+     every checklist or rule line that mentions `index.md`, `costs.md` or
+     `inbox.md`, then renumber. Create
      `journal-archive.md` and `decisions-archive.md` at their first rollup.
-   - **With Claude Code:** all 10 files. `CLAUDE.md` goes at the project
+   - **With Claude Code:** all 11 files. `CLAUDE.md` goes at the project
      root, everything else in a `workflow/` folder.
    - **With superpowers** (installed, or the user plans to use it): also copy
      `references/superpowers.md` to `workflow/superpowers.md`, and add
@@ -44,7 +47,7 @@
 6. In chat, deliver the files:
    - **Chat only:** deliver each file separately for download (Projects
      can't upload a zip).
-   - **With Claude Code:** don't hand out 10 files. Deliver one `inbox.md`
+   - **With Claude Code:** don't hand out 11 files. Deliver one `inbox.md`
      holding a setup packet (format below). The user puts it in the empty
      project folder, opens Claude Code there, and says "Apply inbox.md".
      Claude Code builds everything from this skill's templates, so the
@@ -64,7 +67,7 @@
      `CLAUDE.md` and, in `workflow/`, `instructions.md`, `roadmap.md`,
      `journal.md`, `index.md`, `decisions.md`, `costs.md` and `inbox.md`,
      plus any specification the project is built from. Leave out code,
-     tests, reports and both archive files: a whole-repo sync grows past
+     tests, reports, `session-end.md` and both archive files: a whole-repo sync grows past
      the Project's limit and chat falls back to searching snippets, which
      costs more and misses things. Chat asks for any other file by path
      when it needs it. Each Code session ends by pushing, and one click on
@@ -96,8 +99,8 @@
    created in Claude Code.
    **Expected**: CLAUDE.md at the root starting with
    @workflow/instructions.md (then @workflow/superpowers.md if Superpowers
-   is yes); workflow/ holds instructions, roadmap, journal, journal-archive,
-   index, decisions, decisions-archive, costs and inbox (plus
+   is yes); workflow/ holds instructions, session-end, roadmap, journal,
+   journal-archive, index, decisions, decisions-archive, costs and inbox (plus
    superpowers.md if yes).
    ```
 7. In Claude Code, write the files directly into the project folder:

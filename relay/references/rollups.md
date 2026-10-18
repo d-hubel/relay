@@ -1,5 +1,7 @@
 # Rollups
 
+The same rules appear in each project's `workflow/session-end.md`; this file is for running a rollup from chat.
+
 Two files grow every session. Rollups keep them short without deleting
 anything: old entries move word for word to an archive that sessions read
 only when they need history. Session End runs both checks.

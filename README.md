@@ -34,7 +34,7 @@ Project instructions to paste (claude.ai → your Project → instructions):
 
 ## How a session works
 
-**Start** (read the journal's last entry, then `index.md`, then only the decisions that touch the step's files; open only the files the step needs; confirm the step and model) → **Work** (one roadmap step) → **End** (update files, log decisions, journal entry, sync the Project, then a reminder to start a fresh session for the next step).
+**Start** (read the journal's last entry, then `index.md`, then only the decisions that touch the step's files; open only the files the step needs; confirm the step and model) → **Work** (one roadmap step, finished when its check passes) → **End** (read `session-end.md`: update files, log decisions, journal entry, sync the Project, then a reminder to start a fresh session for the next step).
 
 ## Planning
 
@@ -54,7 +54,8 @@ Chat also checks the journal's "Files changed" lines and asks you to sync before
 
 | File | Purpose |
 |---|---|
-| `instructions.md` | Session checklists and rules |
+| `instructions.md` | Core rules, loaded into every session: start checklist, rules during the step, scope guard, working style |
+| `session-end.md` | End-of-step checklist, rollups and file update rules; read only when a step ends |
 | `roadmap.md` | The plan; `← CURRENT` marks the next step; model tag per code step |
 | `journal.md` | Session log; last entry says where to resume and which files changed |
 | `decisions.md` | Current rules summary plus the newest decisions; each names the files it touches and what was ruled out |
@@ -63,10 +64,10 @@ Chat also checks the journal's "Files changed" lines and asks you to sync before
 | `costs.md` | API spend |
 | `journal-archive.md` | Older journal entries |
 | `decisions-archive.md` | Older decisions |
-| `CLAUDE.md` | Loads the rules into every Claude Code session |
+| `CLAUDE.md` | Loads the core rules into every Claude Code session; tells compaction what to keep |
 | `superpowers.md` | Handoff rules (superpowers users only) |
 
-Chat-only projects need just `instructions`, `roadmap`, `journal`, `decisions` (the archives appear at the first rollup).
+Chat-only projects need just `instructions`, `session-end`, `roadmap`, `journal`, `decisions` (the archives appear at the first rollup).
 
 The skill itself:
 
@@ -90,6 +91,12 @@ Long projects get slow and expensive when every session re-reads a growing pile 
 - **One step per session.** When a step is approved, the session ends and reminds you to start a fresh one. A long session re-reads everything on every message; a fresh one starts from the journal.
 - **A lean Project.** Sync only the files chat needs. A whole-repo sync outgrows the Project and makes chat search snippets instead of reading files.
 - **Contents lists.** Large reference files, like a specification, open with a list of their headings, so a session reads only the sections it needs.
+- **Short always-loaded rules.** Only the core rules load into every session. The end-of-step checklist lives in `session-end.md` and is read when a step ends.
+- **Exploration in subagents.** Investigations that would open many files run in a subagent that returns a short summary, so the reading never fills the main session.
+- **Two strikes, then fresh.** If a problem survives two fixes, the lesson goes in the journal and the session ends. A clean session with a better plan beats one full of failed attempts.
+- **Reviews that report what matters.** Reviewers flag only gaps that affect correctness or the requirements, so extra review rounds don't chase style.
+- **Checks that run.** Every step has a command, test or script that returns pass or fail, so Claude can confirm its own work instead of waiting for you.
+- **Compaction that keeps its place.** `CLAUDE.md` tells Claude what to keep when a long session is summarized: the current step, files changed, and pending checks.
 
 ### Updating an existing project
 
@@ -108,10 +115,12 @@ Projects set up before these changes keep their old `workflow/` files: relay nev
 | Done means | Shown working | Tests pass + review clean |
 | Model per code step | Tagged Haiku/Sonnet/Opus; you switch | Superpowers picks |
 | Non-code steps | relay | relay |
-| Rules per session | ~2,450 tokens | ~3,950 tokens |
+| Rules per session | ~1,750 tokens | ~3,250 tokens |
 
 Design method adapted from superpowers' brainstorming skill. Decisions' Touches and Ruled out lines adapted from [Trail-Code](https://github.com/trailhq/Trail-Code)'s learnings.
 
 ## Changes
+
+**2026-10-18 — Claude Code best practices.** Aligned with [Anthropic's best practices](https://code.claude.com/docs/en/best-practices). The rules file is split: `instructions.md` keeps the core rules that load every session; the end-of-step checklist, rollups and file update rules move to `session-end.md`, read only when a step ends. New rules: every step has a runnable pass/fail check; investigations go to subagents; reviewers report only gaps that affect correctness or requirements; after two failed fixes, record the lesson and start fresh; `CLAUDE.md` tells compaction what to keep. Always-loaded rules fall from about 2,450 to about 1,750 tokens.
 
 **2026-10-17 — Token efficiency.** Main skill file cut from 11.3 KB to 5.3 KB (setup and rollups moved to `references/`). New: decisions summary and rollup with `decisions-archive.md`, Touches and Ruled out lines on decisions, one-line inbox history, index as a snapshot read first, journal entries capped at 8 lines, Contents lists for large reference files, one step per session with a new-session reminder, and guidance to sync only the files chat needs. The per-session rules grow by about 750 tokens; on a large project, the reading at the start of each session fell from about 60–100K tokens to about 25–30K.

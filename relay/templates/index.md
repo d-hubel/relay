@@ -7,7 +7,8 @@ The table of contents for the whole project. Every task reads this first, picks 
 ## Reference Files (`workflow/` folder)
 
 - `CLAUDE.md` — at the repo root; loads `workflow/instructions.md` automatically
-- `instructions.md` — session rules and checklists
+- `instructions.md` — core rules, loaded into every session
+- `session-end.md` — the end-of-step checklist, rollups and file update rules; read only when a step ends
 - `roadmap.md` — the plan and the current step
 - `journal.md` — summary of older sessions plus the latest entries
 - `journal-archive.md` — older journal entries
